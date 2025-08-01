@@ -1,0 +1,14 @@
+body {
+}
+.register-form {
+  background-color: rgba(14, 148, 201, 0.5);
+  width: 50%;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.register-form-content {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+}
