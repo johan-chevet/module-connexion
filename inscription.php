@@ -1,15 +1,19 @@
 <?php
 require_once "dbconfig.php";
 
+function getFormValue($name): string
+{
+    return htmlspecialchars($_POST[$name] ?? "");
+}
+
 if (isset($_POST["submit-register"])) {
     $params = ["login", "password", "password-confirmation", "firstname", "lastname"];
     foreach ($params as $param) {
-        $input = $_POST[$param];
-        if (!isset($input) || trim($input) === "") {
+        if (!isset($_POST[$param]) || trim($_POST[$param]) === "") {
             $errors[$param] = "$param should not be empty";
             continue;
         }
-        $input = trim($input);
+        $input = trim($_POST[$param]);
         if ($param === "login") {
             if (!preg_match('/^[a-zA-Z0-9_]+$/', $input)) {
                 $errors[$param] = "Login can only contains letters, numbers and '_'";
@@ -29,10 +33,11 @@ if (isset($_POST["submit-register"])) {
     ) {
         $errors["password-confirmation"] = "passwords doesn't match";
     } else if (!isset($errors)) {
+        $hashed_password = password_hash($_POST["password"], PASSWORD_DEFAULT);
         $stmt = $db->prepare("INSERT INTO utilisateurs (login, password, prenom, nom)
         VALUES (:login, :password, :firstname, :lastname)");
         $stmt->bindParam("login", $_POST["login"]);
-        $stmt->bindParam("password", $_POST["password"]);
+        $stmt->bindParam("password", $hashed_password);
         $stmt->bindParam("firstname", $_POST["firstname"]);
         $stmt->bindParam("lastname", $_POST["lastname"]);
         if ($stmt->execute()) {
@@ -54,36 +59,39 @@ if (isset($_POST["submit-register"])) {
 </head>
 
 <body>
+    <header>
+        <?php include "navbar.php"; ?>
+    </header>
     <form method="post">
         <div class="register-form">
             <div class="register-form-content">
                 <h1>Inscription</h1>
                 <label for="login">Login: </label>
-                <input type="text" name="login" id="login" value="karim" />
+                <input type="text" name="login" id="login" value=<?= getFormValue("login") ?>>
                 <?php if (isset($errors["login"])) {
                     echo "<p>" . $errors["login"] . "</p>";
                 }
                 ?>
                 <label for="password">Password: </label>
-                <input type="password" name="password" id="password" value="123" />
+                <input type="password" name="password" id="password" value=<?= getFormValue("password") ?>>
                 <?php if (isset($errors["password"])) {
                     echo "<p>" . $errors["password"] . "</p>";
                 }
                 ?>
                 <label for="password-confirmation">Password confirmation: </label>
-                <input type="password" name="password-confirmation" id="password-confirmation" value="123" />
+                <input type="password" name="password-confirmation" id="password-confirmation" value=<?= getFormValue("password-confirmation") ?>>
                 <?php if (isset($errors["password-confirmation"])) {
                     echo "<p>" . $errors["password-confirmation"] . "</p>";
                 }
                 ?>
                 <label for="firstname">Firstname: </label>
-                <input type="text" name="firstname" id="firstname" value="karimm" />
+                <input type="text" name="firstname" id="firstname" value=<?= getFormValue("firstname") ?>>
                 <?php if (isset($errors["firstname"])) {
                     echo "<p>" . $errors["firstname"] . "</p>";
                 }
                 ?>
                 <label for="lastname">Lastname: </label>
-                <input type="text" name="lastname" id="lastname" value="PPPPP" />
+                <input type="text" name="lastname" id="lastname" value=<?= getFormValue(name: "lastname") ?>>
                 <?php if (isset($errors["lastname"])) {
                     echo "<p>" . $errors["lastname"] . "</p>";
                 }

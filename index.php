@@ -19,19 +19,25 @@ if (isset($_SESSION["user"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Home</title>
 </head>
 
 <body>
+
     <header>
         <nav class="navbar">
+            <h2>Module de connexion</h2>
             <ul>
+                <li>
+                    <a href="index.php">Accueil</a>
+                </li>
                 <?php if (!isset($user)): ?>
                     <li>
-                        <a href="connexion.php">Connexion</a>
+                        <a href="connexion.php">Se connecter</a>
                     </li>
                     <li>
-                        <a href="inscription.php">Inscription</a>
+                        <a href="inscription.php">Créer un compte</a>
                     </li>
                 <?php else: ?>
                     <?php if (strtolower($user["login"]) === "admin"): ?>

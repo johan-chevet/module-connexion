@@ -1,8 +1,6 @@
 <?php
 require_once "dbconfig.php";
-
-session_name("module-connexion");
-session_start();
+require_once "init-session.php";
 
 if (!isset($_SESSION["user"])) {
     header("Location: index.html");
@@ -57,10 +55,14 @@ if (isset($_POST["submit-update"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Profil</title>
 </head>
 
 <body>
+    <header>
+        <?php include "navbar.php"; ?>
+    </header>
     <form method="post">
         <div class="update-form">
             <div class="register-form-content">

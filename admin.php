@@ -1,8 +1,6 @@
 <?php
 require_once "dbconfig.php";
-
-session_name("module-connexion");
-session_start();
+require_once "init-session.php";
 
 /* If user is not admin, redirect to home page */
 if (!isset($_SESSION['user']) || $_SESSION['user']['login'] !== "admin") {
@@ -22,10 +20,14 @@ $users = $res->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Admin page</title>
 </head>
 
 <body>
+    <header>
+        <?php include "navbar.php"; ?>
+    </header>
     <h1>Liste des utilisateurs</h1>
     <table>
         <thead>

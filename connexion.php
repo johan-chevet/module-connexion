@@ -1,9 +1,16 @@
 <?php
 require_once "dbconfig.php";
+require_once "init-session.php";
 
-session_name("module-connexion");
-session_start();
-// TODO redirect if already connected ?
+function getFormValue($name): string
+{
+    return htmlspecialchars($_POST[$name] ?? "");
+}
+
+if (isset($_SESSION["user"])) {
+    header("Location: index.php");
+    exit();
+}
 
 if (isset($_POST["submit-login"])) {
     $login = $_POST["login"];
@@ -14,7 +21,7 @@ if (isset($_POST["submit-login"])) {
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
             $user =  $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($user["password"] === $password) {
+            if (password_verify($password, $user["password"])) {
                 unset($user["password"]);
                 $_SESSION["user"] = $user;
                 header('Location: index.php');
@@ -38,18 +45,21 @@ if (isset($_POST["submit-login"])) {
 </head>
 
 <body>
+    <header>
+        <?php include "navbar.php"; ?>
+    </header>
     <form method="post">
         <div class="login-form">
             <div class="login-form-content">
                 <h1>Connexion</h1>
                 <label for="login">Login: </label>
-                <input type="text" name="login" id="login" required value="karim" />
+                <input type="text" name="login" id="login" required value=<?= getFormValue("login") ?>>
                 <?php if (isset($errors["login"])) {
                     echo "<p>" . $errors["login"] . "</p>";
                 }
                 ?>
                 <label for="password">Password: </label>
-                <input type="password" name="password" id="password" required value="123" />
+                <input type="password" name="password" id="password" required value=<?= getFormValue("password") ?>>
                 <?php if (isset($errors["password"])) {
                     echo "<p>" . $errors["password"] . "</p>";
                 }
