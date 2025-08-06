@@ -72,19 +72,19 @@ if (isset($_POST["submit-update"])) {
                 }
                 ?>
                 <label for="login">Login: </label>
-                <input type="text" name="login" id="login" value=<?= $user["login"] ?> />
+                <input type="text" name="login" id="login" value=<?= htmlspecialchars($user["login"]) ?> />
                 <?php if (isset($errors["login"])) {
                     echo "<p>" . $errors["login"] . "</p>";
                 }
                 ?>
                 <label for="firstname">Firstname: </label>
-                <input type="text" name="firstname" id="firstname" value=<?= $user["prenom"] ?> />
+                <input type="text" name="firstname" id="firstname" value=<?= htmlspecialchars($user["prenom"]) ?> />
                 <?php if (isset($errors["firstname"])) {
                     echo "<p>" . $errors["firstname"] . "</p>";
                 }
                 ?>
                 <label for="lastname">Lastname: </label>
-                <input type="text" name="lastname" id="lastname" value=<?= $user["nom"] ?> />
+                <input type="text" name="lastname" id="lastname" value=<?= htmlspecialchars($user["nom"]) ?> />
                 <?php if (isset($errors["lastname"])) {
                     echo "<p>" . $errors["lastname"] . "</p>";
                 }

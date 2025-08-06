@@ -42,7 +42,7 @@ $users = $res->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($users as $user): ?>
                 <tr>
                     <?php foreach ($user as $key => $value): ?>
-                        <td><?= $value ?></td>
+                        <td><?= htmlspecialchars($value) ?></td>
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>
